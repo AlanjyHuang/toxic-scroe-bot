@@ -53,20 +53,20 @@ class telbot:
         if userscore.get(user):
             score=userscore[user]
             if 0<=score<=20:
-                update.message.reply_text(text=" 你太善良了")
                 self.bot.send_photo(chat_id=chat['id'], photo=open('picfolder/0.jpg', 'rb'))
+                update.message.reply_text(text=" 你太善良了")
             elif 20<score<=40:
-                update.message.reply_text(text="男人不壞 女人不愛")
                 self.bot.send_photo(chat_id=chat['id'], photo=open('picfolder/1.jpg', 'rb'))
+                update.message.reply_text(text="男人不壞 女人不愛")
             elif 40<score <= 60:
-                update.message.reply_text(text="超壞!")
                 self.bot.send_photo(chat_id=chat['id'], photo=open('picfolder/2.jpg', 'rb'))
+                update.message.reply_text(text="你超壞!")
             elif 60<score <= 80:
-                update.message.reply_text(text="你死掉後會下地獄")
                 self.bot.send_photo(chat_id=chat['id'], photo=open('picfolder/3.jpg', 'rb'))
+                update.message.reply_text(text="你死掉後會下地獄")
             elif 80<score <= 100:
-                update.message.reply_text(text="NMSL")
                 self.bot.send_photo(chat_id=chat['id'], photo=open('picfolder/4.jpg', 'rb'))
+                update.message.reply_text(text="NMSL")
         else:
             update.message.reply_text(text="You have no latest toxic comment")
     def toxic_report(self,bot,update):
