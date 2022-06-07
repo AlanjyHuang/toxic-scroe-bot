@@ -3,12 +3,13 @@ import telegram
 import requests
 import configparser
 import os
+from Toxic import Toxic
 userdata={}
 userscore={}
 class telbot:
     def __init__(self):
         self.read_token()
-        
+        self.toxic=Toxic()
 
     def read_token(self):
        self.config = configparser.ConfigParser()
@@ -18,6 +19,7 @@ class telbot:
 
     def startbot(self):
         # 初始化bot
+        self.bot=telegram.Bot(token=self.config['TELBOT']['token'])
         self.updater = Updater(token=self.config['TELBOT']['token'],use_context=False)
         self.dispatcher = self.updater.dispatcher
         self.dispatcher.add_handler(CommandHandler('hi', self.hi))
@@ -36,10 +38,13 @@ class telbot:
         chat = message['chat']
         update.message.reply_text(text="Testing toixc score, please wait ....")
         text = update.message.text
-        score=90
+        back=self.toxic.predict(text)
+        score=int((back.mean())*100)
         update.message.reply_text(text="Your toxic score of  \""+str(text)+"\" is "+str(score))
         user=str(chat['first_name'])+' '+str(chat['last_name'])
         userdata[user]=text
+        userscore[user]=score
+
     def toxic_score(self,bot, update):
         message = update.message
         chat = message['chat']
@@ -48,22 +53,30 @@ class telbot:
             score=userscore[user]
             if 0<=score<=20:
                 update.message.reply_text(text=" 你太善良了")
+                self.bot.send_photo(chat_id=chat['id'], photo=open('picfoder/0.jpg', 'rb'))
             elif 20<score<=40:
                 update.message.reply_text(text="男人不壞 女人不愛")
+                self.bot.send_photo(chat_id=chat['id'], photo=open('picfoder/1.jpg', 'rb'))
             elif 40<score <= 60:
                 update.message.reply_text(text="超壞!")
+                self.bot.send_photo(chat_id=chat['id'], photo=open('picfoder/2.jpg', 'rb'))
             elif 60<score <= 80:
                 update.message.reply_text(text="你死掉後會下地獄")
+                self.bot.send_photo(chat_id=chat['id'], photo=open('picfoder/3.jpg', 'rb'))
             elif 80<score <= 100:
                 update.message.reply_text(text="NMSL")
+                self.bot.send_photo(chat_id=chat['id'], photo=open('picfoder/4.jpg', 'rb'))
         else:
             update.message.reply_text(text="You have no latest toxic comment")
     def toxic_report(self,bot,update):
         message = update.message
         chat = message['chat']
         user=str(chat['first_name'])+' '+str(chat['last_name'])
+        
         if userdata.get(user):
-            update.message.reply_text(text=self.make_report(user,userdata[user],1,2,3,4,5,6,90))
+            back=self.toxic.predict(userdata[user])
+            score=int((back.mean())*100)
+            update.message.reply_text(text=self.make_report(user,userdata[user],int(back[0]*100),int(back[0]*100),int(back[0]*100),int(back[0]*100),int(back[0]*100),int(back[0]*100),score))
         else:
             update.message.reply_text(text="You have no latest toxic comment")
     
