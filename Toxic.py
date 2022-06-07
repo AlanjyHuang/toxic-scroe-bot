@@ -1,5 +1,6 @@
 from keras.models import load_model
-from keras_preprocessing import text, sequence
+from keras.preprocessing import text
+from keras_preprocessing import sequence
 import pandas as pd
 
 
