@@ -28,7 +28,7 @@ class Toxic:
 
     def predict(self, s: str):
         s_tok = [s.lower()]
-        s_tok = self.tok.texts_to_sequences(s)
+        s_tok = self.tok.texts_to_sequences(s_tok)
         s_tok = sequence.pad_sequences(s_tok, maxlen=self.maxlen)
 
         return self.model.predict(s_tok)[0]
