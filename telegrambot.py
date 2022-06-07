@@ -77,7 +77,7 @@ class telbot:
         if userdata.get(user):
             back=self.toxic.predict(userdata[user])
             score=int((back.mean())*100)
-            update.message.reply_text(text=self.make_report(user,userdata[user],int(back[0]*100),int(back[0]*100),int(back[0]*100),int(back[0]*100),int(back[0]*100),int(back[0]*100),score))
+            update.message.reply_text(text=self.make_report(user,userdata[user],int(back[0]*100),int(back[1]*100),int(back[2]*100),int(back[3]*100),int(back[4]*100),int(back[5]*100),score))
         else:
             update.message.reply_text(text="You have no latest toxic comment")
     
