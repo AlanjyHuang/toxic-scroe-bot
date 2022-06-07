@@ -4,7 +4,7 @@ import requests
 import configparser
 import os
 userdata={}
-
+userscore={}
 class telbot:
     def __init__(self):
         self.read_token()
@@ -40,7 +40,24 @@ class telbot:
         update.message.reply_text(text="Your toxic score of  \""+str(text)+"\" is "+str(score))
         user=str(chat['first_name'])+' '+str(chat['last_name'])
         userdata[user]=text
-
+    def toxic_score(self,bot, update):
+        message = update.message
+        chat = message['chat']
+        user=str(chat['first_name'])+' '+str(chat['last_name'])
+        if userscore.get(user):
+            score=userscore[user]
+            if 0<=score<=20:
+                update.message.reply_text(text=" 你太善良了")
+            elif 20<score<=40:
+                update.message.reply_text(text="男人不壞 女人不愛")
+            elif 40<score <= 60:
+                update.message.reply_text(text="超壞!")
+            elif 60<score <= 80:
+                update.message.reply_text(text="你死掉後會下地獄")
+            elif 80<score <= 100:
+                update.message.reply_text(text="NMSL")
+        else:
+            update.message.reply_text(text="You have no latest toxic comment")
     def toxic_report(self,bot,update):
         message = update.message
         chat = message['chat']
@@ -49,6 +66,7 @@ class telbot:
             update.message.reply_text(text=self.make_report(user,userdata[user],1,2,3,4,5,6,90))
         else:
             update.message.reply_text(text="You have no latest toxic comment")
+    
     def make_report(self,user,wd,s1,s2,s3,s4,s5,s6,score):
         text="===================================================\n"
         text+=(user+"\'s Toxic Report \n")
