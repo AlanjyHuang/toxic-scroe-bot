@@ -23,6 +23,7 @@ class telbot:
         self.updater = Updater(token=self.config['TELBOT']['token'],use_context=False)
         self.dispatcher = self.updater.dispatcher
         self.dispatcher.add_handler(CommandHandler('hi', self.hi))
+        self.dispatcher.add_handler(CommandHandler('toxic_score', self.toxic_score))
         self.dispatcher.add_handler(CommandHandler('toxic_report', self.toxic_report))
         self.dispatcher.add_handler(MessageHandler(Filters.text, self.reply_handler))
         
